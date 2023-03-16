@@ -5,7 +5,7 @@ info:
   description: API for managing countries around the world
 
 servers:
-  - url: '{protocol}://{host}:{port}/countries-service/v1'
+  - url: '{protocol}://{host}:{port}/{context-path}/{api-version}'
     variables:
       protocol:
         enum:
@@ -16,6 +16,10 @@ servers:
         default: 'localhost'
       port:
         default: '8080'
+      context-path:
+        default: 'countries-service'
+      api-version:
+        default: 'v1'
 
 paths:
   /countries:
@@ -28,9 +32,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Country'
+                $ref: '#/components/schemas/CountriesResponse'
         '404':
           description: No countries found
           content:
@@ -270,6 +272,14 @@ components:
         population: 14442161
         urban_population: 12093199
         rural_population: 2348962
+
+    CountriesResponse:
+      type: object
+      properties:
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
 
     ErrorResponse:
       type: object
